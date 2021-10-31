@@ -4,7 +4,8 @@ import * as country from './parsers/country';
 import * as game from './parsers/game';
 import * as matchday from './parsers/matchday';
 import * as player from './parsers/player';
+import * as playerDetailed from './parsers/playerDetailed';
 import * as season from './parsers/season';
 
-export { club, competition, country, game, matchday, player, season };
-export default { club, competition, country, game, matchday, player, season };
+export { club, competition, country, game, matchday, player, playerDetailed, season };
+export default { club, competition, country, game, matchday, player, playerDetailed, season };

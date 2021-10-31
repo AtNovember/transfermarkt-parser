@@ -4,6 +4,7 @@ import * as country from './country';
 import * as game from './game';
 import * as matchday from './matchday';
 import * as player from './player';
+import * as playerDetailed from './playerDetailed';
 import * as season from './season';
 
 export default {
@@ -13,5 +14,6 @@ export default {
     game,
     matchday,
     player,
+    playerDetailed,
     season,
 };
