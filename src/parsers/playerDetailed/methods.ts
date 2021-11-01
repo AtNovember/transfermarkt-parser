@@ -86,15 +86,16 @@ export function list(clubId: number, seasonId: string): Promise<Array<PlayerDeta
 
                 const transferFee = signedFromClubTransferFeeAttr
                     ? signedFromClubTransferFeeAttr.split(': Ablöse ')[1].split('"')[0]
-                    : '';
+                    : ''; // "-" значит воспитанник клуба
 
-                // тут можно получить id прошлого клуба, за сколько купили, и в каком году
-                // <a class="vereinprofil_tooltip" id="1041" href="/olympique-lyon/startseite/verein/1041/saison_id/2018">
-                // <img src="https://tmssl.akamaized.net/images/wappen/verysmall/1041.png?lm=1581024966" title=": Ablöse €21.50m" alt="Olympique Lyon" class=""></a>
+                const clubTitle = signedFromClubTransferFeeNode
+                    ? signedFromClubTransferFeeNode.getAttribute('alt')
+                    : null;
 
                 const signedFrom = {
                     clubId,
                     transferFee,
+                    clubTitle,
                 };
 
                 const contractNode = node.querySelector('td:nth-child(9)');

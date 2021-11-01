@@ -1,6 +1,6 @@
 interface SignedFrom {
     clubId: string;
-    // clubTitle: string;
+    clubTitle: string;
     transferFee: string;
 }
 
