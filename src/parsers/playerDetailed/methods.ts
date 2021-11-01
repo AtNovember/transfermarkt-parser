@@ -64,22 +64,23 @@ export function list(clubId: number, seasonId: string): Promise<Array<PlayerDeta
                     });
                 }
 
-                const heightNode = node.querySelector('td:nth-child(5)');
+                const heightNode = node.querySelector('td:nth-child(6)');
                 const height = heightNode.innerHTML;
 
-                const footNode = node.querySelector('td:nth-child(6)');
+                const footNode = node.querySelector('td:nth-child(7)');
                 const foot = footNode.innerHTML || '-';
 
-                const joinedNode = node.querySelector('td:nth-child(7)');
-                const joined = joinedNode
-                    ? moment(joinedNode.innerHTML, 'MMM DD, YYYY').format('YYYY-MM-DD')
-                    : null;
+                const joinedNode = node.querySelector('td:nth-child(8)');
+                const joined =
+                    joinedNode && joinedNode.innerHTML !== '-'
+                        ? moment(joinedNode.innerHTML, 'MMM DD, YYYY').format('YYYY-MM-DD')
+                        : joinedNode.innerHTML;
 
-                const signedFromClubIdNode = node.querySelector('td:nth-child(8) > a');
+                const signedFromClubIdNode = node.querySelector('td:nth-child(9) > a');
                 const clubId = signedFromClubIdNode
                     ? signedFromClubIdNode.getAttribute('id')
                     : null;
-                const signedFromClubTransferFeeNode = node.querySelector('td:nth-child(8) img');
+                const signedFromClubTransferFeeNode = node.querySelector('td:nth-child(9) img');
                 const signedFromClubTransferFeeAttr = signedFromClubTransferFeeNode
                     ? signedFromClubTransferFeeNode.getAttribute('title')
                     : null;
@@ -98,13 +99,14 @@ export function list(clubId: number, seasonId: string): Promise<Array<PlayerDeta
                     clubTitle,
                 };
 
-                const contractNode = node.querySelector('td:nth-child(9)');
-                const contract = contractNode
-                    ? moment(contractNode.innerHTML, 'MMM DD, YYYY').format('YYYY-MM-DD')
-                    : null;
+                const contractNode = node.querySelector('td:nth-child(10)');
+                const contract =
+                    contractNode && contractNode.innerHTML !== '-'
+                        ? moment(contractNode.innerHTML, 'MMM DD, YYYY').format('YYYY-MM-DD')
+                        : contractNode.innerHTML;
 
                 /**  получаем стоимость игрока */
-                const marketValueNode = node.querySelector('td:nth-child(10)');
+                const marketValueNode = node.querySelector('td:nth-child(11)');
                 const marketValue = marketValueNode.innerHTML.split('&nbsp;')[0];
 
                 return createPlayerDetailed({
