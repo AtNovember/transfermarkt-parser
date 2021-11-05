@@ -64,23 +64,52 @@ export function list(clubId: number, seasonId: string): Promise<Array<PlayerDeta
                     });
                 }
 
-                const heightNode = node.querySelector('td:nth-child(6)');
+                /**
+                 * In detailed information about players could be column "Current club", or could not
+                 *
+                 * for example:
+                 * there is no "current club" info:
+                 *  - https://www.transfermarkt.com/fc-barcelona/kader/verein/131/saison_id/2021/plus/1
+                 * here it has "current club" colunm:
+                 *   - https://www.transfermarkt.com/fc-barcelona/kader/verein/131/saison_id/2020/plus/1
+                 *
+                 * Conclusion.
+                 *  There is no column "Current Club" for current season table.
+                 *  But there are for all previous seasons.
+                 *  That's why all columns next to current club moved right for one item
+                 * */
+
+                const currentYear = moment().format('YYYY');
+                const isTheLastSeason = parseInt(seasonId) === parseInt(currentYear);
+
+                const heightNode = isTheLastSeason
+                    ? node.querySelector('td:nth-child(5)')
+                    : node.querySelector('td:nth-child(6)');
                 const height = heightNode.innerHTML;
 
-                const footNode = node.querySelector('td:nth-child(7)');
+                const footNode = isTheLastSeason
+                    ? node.querySelector('td:nth-child(6)')
+                    : node.querySelector('td:nth-child(7)');
                 const foot = footNode.innerHTML || '-';
 
-                const joinedNode = node.querySelector('td:nth-child(8)');
+                const joinedNode = isTheLastSeason
+                    ? node.querySelector('td:nth-child(7)')
+                    : node.querySelector('td:nth-child(8)');
                 const joined =
                     joinedNode && joinedNode.innerHTML !== '-'
                         ? moment(joinedNode.innerHTML, 'MMM DD, YYYY').format('YYYY-MM-DD')
                         : joinedNode.innerHTML;
 
-                const signedFromClubIdNode = node.querySelector('td:nth-child(9) > a');
+                const signedFromClubIdNode = isTheLastSeason
+                    ? node.querySelector('td:nth-child(8) > a')
+                    : node.querySelector('td:nth-child(9) > a') || null;
+
                 const clubId = signedFromClubIdNode
                     ? signedFromClubIdNode.getAttribute('id')
                     : null;
-                const signedFromClubTransferFeeNode = node.querySelector('td:nth-child(9) img');
+                const signedFromClubTransferFeeNode = isTheLastSeason
+                    ? node.querySelector('td:nth-child(8) img')
+                    : node.querySelector('td:nth-child(9) img');
                 const signedFromClubTransferFeeAttr = signedFromClubTransferFeeNode
                     ? signedFromClubTransferFeeNode.getAttribute('title')
                     : null;
@@ -99,15 +128,36 @@ export function list(clubId: number, seasonId: string): Promise<Array<PlayerDeta
                     clubTitle,
                 };
 
-                const contractNode = node.querySelector('td:nth-child(10)');
+                const contractNode = isTheLastSeason
+                    ? node.querySelector('td:nth-child(9)')
+                    : node.querySelector('td:nth-child(10)');
                 const contract =
                     contractNode && contractNode.innerHTML !== '-'
                         ? moment(contractNode.innerHTML, 'MMM DD, YYYY').format('YYYY-MM-DD')
                         : contractNode.innerHTML;
 
                 /**  получаем стоимость игрока */
-                const marketValueNode = node.querySelector('td:nth-child(11)');
+                const marketValueNode = isTheLastSeason
+                    ? node.querySelector('td:nth-child(10)')
+                    : node.querySelector('td:nth-child(11)');
                 const marketValue = marketValueNode.innerHTML.split('&nbsp;')[0];
+
+                console.log({
+                    id,
+                    name,
+                    birthday,
+                    nationalities,
+                    number: number === '-' ? null : parseInt(number),
+                    photoUrl,
+                    position,
+                    age,
+                    height,
+                    foot,
+                    joined: null,
+                    signedFrom: null,
+                    contract: null,
+                    marketValue: null,
+                });
 
                 return createPlayerDetailed({
                     id,
