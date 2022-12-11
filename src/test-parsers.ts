@@ -1,7 +1,40 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { club, competition, country, game, matchday, player, playerDetailed, season } from './index';
+import {
+    club,
+    competition,
+    country,
+    game,
+    matchday,
+    player,
+    playerDetailed,
+    season,
+} from './index';
+import { laliga } from './source/laliga';
+
+const data = [];
+for (let season in laliga) {
+    console.log('SEASON >>', season, laliga[season]);
+
+    laliga[season].map(club => {
+        playerDetailed
+            .list(club.id, season)
+            // .then(players => {
+            //     data.push({ players, season, club, transfermarktId: club.id });
+            //     console.log('data 111  >>>', data);
+            //     return data;
+            // })
+            .then(data => {
+                fs.writeFileSync(path.join(__dirname, 'temp.json'), JSON.stringify(data));
+            })
+            .catch(error => {
+                console.log('error', error);
+            });
+    });
+}
+
+console.log('data 333 >>>', data);
 
 // const log = console.log;
 
@@ -65,15 +98,15 @@ import { club, competition, country, game, matchday, player, playerDetailed, sea
 //     });
 
 // PlayerDetailed
-playerDetailed
-    // .list(undefined, undefined)
-    .list(418, '2021')
-    .then(response => {
-        console.log('response', response);
-    })
-    .catch(error => {
-        console.log('error', error);
-    });
+// playerDetailed
+//     // .list(undefined, undefined)
+//     .list(13, '2004')
+//     .then(response => {
+//         console.log('response', response);
+//     })
+//     .catch(error => {
+//         console.log('error', error);
+//     });
 
 // Season
 // season

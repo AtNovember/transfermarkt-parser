@@ -6,6 +6,7 @@ import * as matchday from './parsers/matchday';
 import * as player from './parsers/player';
 import * as playerDetailed from './parsers/playerDetailed';
 import * as season from './parsers/season';
+import * as laliga from './source/laliga';
 
-export { club, competition, country, game, matchday, player, playerDetailed, season };
-export default { club, competition, country, game, matchday, player, playerDetailed, season };
+export { club, competition, country, game, matchday, player, playerDetailed, season, laliga };
+export default { club, competition, country, game, matchday, player, playerDetailed, season, laliga };
