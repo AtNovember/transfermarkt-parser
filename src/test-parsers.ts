@@ -13,26 +13,33 @@ import {
 } from './index';
 import { laliga } from './source/laliga';
 
-const data = [];
-for (let season in laliga) {
-    console.log('SEASON >>', season, laliga[season]);
 
-    laliga[season].map(club => {
-        playerDetailed
-            .list(club.id, season)
-            // .then(players => {
-            //     data.push({ players, season, club, transfermarktId: club.id });
-            //     console.log('data 111  >>>', data);
-            //     return data;
-            // })
-            .then(data => {
-                fs.writeFileSync(path.join(__dirname, 'temp.json'), JSON.stringify(data));
-            })
-            .catch(error => {
-                console.log('error', error);
-            });
-    });
-}
+const filename = 'saved_data.json';
+const data = [];
+// for (let season in laliga) {
+//     console.log('SEASON >>', season, laliga[season]);
+
+//     laliga[season].map(club => {
+//         playerDetailed
+//             .list(club.id, season)
+//             .then(players => {
+//                 data.push({ players, season, club, transfermarktId: club.id });
+//                 console.log('data 111  >>>', data);
+//                 return data;
+//             })
+//             .then(data => {
+//                 console.log('__dirname', __dirname);
+//                 // fs.writeFileSync(path.join(__dirname, 'temp.json'), JSON.stringify(data));
+//                 fs.writeFileSync(path.join(__dirname, filename), JSON.stringify(data));
+//             })
+//             .catch(error => {
+//                 console.log('error', error);
+//             })
+//             .finally(() => {
+//                 console.log('DATA SAVED TO >>', `${__dirname}/${filename}`)
+//             });
+//     });
+// }
 
 console.log('data 333 >>>', data);
 
@@ -56,8 +63,42 @@ console.log('data 333 >>>', data);
 
 // main('GB1', '2019');
 
+const seasonIds = [
+    '1997',
+    '2004',
+    // 2005,
+    // 2006,
+    // 2007,
+    // 2008,
+    // 2009,
+    // 2010,
+    // 2011,
+    // 2012,
+    // 2013,
+    // 2014,
+    // 2015,
+    // 2016,
+    // 2017,
+    // 2018,
+    // 2019,
+    // 2020,
+    // 2021,
+    // 2022,
+];
+
 // Club
 // club.list('aaa', 'bbb')
+for (let i in seasonIds) {
+    const seasonId = seasonIds[i];
+    console.log('PIDOR >>>', seasonId);
+    club.list('SER1', seasonId)
+    .then(response => {
+        console.log(seasonId, response);
+    })
+    .catch(error => {
+        console.log('error', error);
+    });
+}
 // club.list('ES1', seasonId)
 //     .then(response => {
 //         console.log(seasonId, response);

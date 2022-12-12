@@ -12,31 +12,21 @@ import { makeRequest, parse } from '../../utils';
 import url from '../../url';
 
 export function list(competitionId: string, seasonId: string): Promise<Array<Club>> {
+
+    console.log('PARSING STARTED');
     const parseFn = parse(data => {
         if (!data) {
+            console.log('ERRR 1111');
             throw ERROR_NOT_FOUND;
         }
+
+
 
         const dom = new JSDOM(data);
 
-        // Correct page marker
-        const markerNode = dom.window.document.querySelector(
-            '#wettbewerbsstartseite .info-content',
-        );
-        const marker =
-            markerNode &&
-            markerNode.innerHTML &&
-            markerNode.innerHTML.trim() === 'Competition startpage';
-        if (!marker) {
-            throw ERROR_NOT_FOUND;
-        }
-
-        return [...dom.window.document.querySelectorAll('#yw1 tbody tr')]
-            .filter(node => node.querySelector('.hauptlink a'))
-            .map(node => {
+        return [...dom.window.document.querySelectorAll('#yw1.grid-view table.items tbody tr')].map((node, index) => {
                 const linkNode = node.querySelector('.hauptlink a');
-                const id = parseInt(linkNode.getAttribute('id'));
-
+                const id = linkNode.getAttribute('href').split('/')[4];
                 return createClub({
                     id,
                     logoUrl: url.club.logo(id),
